@@ -1,61 +1,50 @@
-import './ExpenseSummary.css'
+import './ExpenseSummary.css';
 import { useState, useEffect } from 'react';
 
+function ExpenseSummary() {
+    const [monthSummaries, setMonthSummaries] = useState([]);
 
-function ExpenseSummary(){
-   
-    
-    const [expenseSummary, setExpenseSummary] = useState(null);
+    function formatDate(dateString) {
+        const options = { year: 'numeric', month: 'short' };
+        return new Date(dateString).toLocaleDateString('en-US', options);
+      }
 
-  useEffect(() => {
-
+    useEffect(() => {
         getData();
-  }, []);
+    }, []);
 
-  
-const getData = () =>{
-    fetch('http://localhost:8080/expense/summary')
-    .then((res) => {
-        return res.json();
-    })
-    .then((data) => {
-         console.log(data);
-         setExpenseSummary(data);
-       })
-    }
+    const getData = () => {
+        fetch('http://localhost:8080/expense/summary')
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data);
+                if (data.monthSummaries) {
+                    setMonthSummaries(data.monthSummaries);
+                } else {
+                    console.error('Month summaries data is undefined or null.');
+                }
+            })
+            .catch((error) => {
+                console.error('Error fetching data:', error);
+            });
+    };
 
-    return(
-        
+    return (
         <div className="Summary-Container">
-            <div className="Month1Summary">
-            <div className="containere">
-                <div className="content">previousMonth1</div>
-
-                <div className="contentValue">
-                   USD: {expenseSummary?.previousMonth1.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                </div></div>
-            </div>
-
-            <div className="Month2Summary">
-            <div className="containere">
-                <div className="content">previousMonth2</div>
-                
-                <div className="contentValue">
-                   USD: {expenseSummary?.previousMonth2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                </div></div>
-            </div>
-
-            <div className="Month3Summary">
-            <div className="containere">
-                <div className="content">previousMonth3</div>
-
-                <div className="contentValue">
-                        USD: {expenseSummary?.previousMonth3.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                </div></div>
-            </div>
-
+            {monthSummaries.length > 0 ? (
+                monthSummaries.map((summary, index) => (
+                    <div key={index} className="Month1Summary">
+                        <div className="container">
+                            <div className="content">{formatDate(summary.month)}</div>
+                            <div className="contentValue">USD {summary.totalExpenses.toFixed(2)}</div>
+                        </div>
+                    </div>
+                ))
+            ) : (
+                <div>Loading...</div>
+            )}
         </div>
-    )
+    );
 }
 
 export default ExpenseSummary;

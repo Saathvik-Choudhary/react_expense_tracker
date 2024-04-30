@@ -5,23 +5,22 @@ import SaveExpense from './SaveExpense';
 import React, { useState } from 'react';
 
 function App() {
+
   const [activeSection, setActiveSection] = useState('Home'); // Initial active section
 
-  const [isButtonClicked, setIsButtonClicked] = useState(false); // Button state
-
-  const buttonStyle1 = isButtonClicked ? { backgroundColor: '#45474B' } : {backgroundColor:'#000'};
-
-  const buttonStyle2 = isButtonClicked ? { backgroundColor: '#000' } : {backgroundColor: '#45474B'};
-
+  const [isHomeButtonClicked, setIsHomeButtonClicked] = useState(false); // Home button state
+  const [isAssetButtonClicked, setIsAssetButtonClicked] = useState(false); // Asset button state
 
   const handleHomeClick = () => {
     setActiveSection('Home');
-    setIsButtonClicked(!isButtonClicked); // Toggle state on click
+    setIsHomeButtonClicked(true); // Set Home button as clicked
+    setIsAssetButtonClicked(false); // Reset Asset button state
   };
 
   const handleAssetClick = () => {
     setActiveSection('Spend');
-    setIsButtonClicked(!isButtonClicked); // Toggle state on click
+    setIsAssetButtonClicked(true); // Set Asset button as clicked
+    setIsHomeButtonClicked(false); // Reset Home button state
   };
 
   const handleSaveClick = () => {
@@ -37,33 +36,36 @@ function App() {
 
         <div className="DynamicContainer">
           {activeSection === 'Home' && <ExpenseSummary />}
-          {activeSection === 'Spend' &&(
+          {activeSection === 'Spend' && (
             <>
               <button className="newAsset" onClick={handleSaveClick}>
                 <div className="ButtonName">New</div>
               </button>
-              {
-
-              }
               <ExpenseList/>
             </>
           )}
           {activeSection === 'Save' && <SaveExpense />}
 
-          
         </div>
-        
+
         <div className="StaticContainer">
-          <button style={buttonStyle1} className="HomeButton" onClick={handleHomeClick}>
+          <button
+            style={{ backgroundColor: isHomeButtonClicked ? '#45474B' : '#000' }}
+            className="HomeButton"
+            onClick={handleHomeClick}
+          >
             <div className="contents">Home</div>
           </button>
 
-          <button style={buttonStyle2} className="AssetsButton" onClick={handleAssetClick}>
+          <button
+            style={{ backgroundColor: isAssetButtonClicked ? '#45474B' : '#000' }}
+            className="AssetsButton"
+            onClick={handleAssetClick}
+          >
             <div className="contents">Spend</div>
           </button>
         </div>
       </header>
-
     </div>
   );
 }
