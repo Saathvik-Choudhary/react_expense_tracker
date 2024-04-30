@@ -45,12 +45,18 @@ function SaveExpense() {
     }
 
     try {
-      const response = await fetch("http://localhost:8080/asset/save", {
+      const formattedData = {
+        cost: parseFloat(formData.cost),
+        title: formData.title,
+        dateOfExpense: new Date(formData.purchaseDate).toISOString(),
+      };
+
+      const response = await fetch("http://localhost:8080/expense/save", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formattedData),
       });
       console.log(response.data);
     } catch (error) {

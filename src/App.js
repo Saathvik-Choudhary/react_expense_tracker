@@ -2,7 +2,7 @@ import './App.css';
 import ExpenseList from './ExpenseList';
 import ExpenseSummary from './ExpenseSummary'; // Assuming correct import path
 import SaveExpense from './SaveExpense';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function App() {
 
@@ -27,6 +27,25 @@ function App() {
     setActiveSection('Save');
   };
 
+
+  const [list, setExpenseList] = useState([]);
+
+  useEffect(() => {
+        getExpenseList();
+  }, []);
+
+const getExpenseList = () =>{
+    fetch('http://localhost:8080/expense/all')
+    .then((res) => {
+        return res.json();
+    })
+    .then((response) => {
+         console.log(response);
+         setExpenseList(response.content);
+       })
+    }
+
+
   return (
     <div className="App">
       <header className="App-header">
@@ -41,7 +60,15 @@ function App() {
               <button className="newAsset" onClick={handleSaveClick}>
                 <div className="ButtonName">New</div>
               </button>
-              <ExpenseList/>
+              {
+              list.map((item,index) => (
+              <ExpenseList key={index}
+                            title={item.title} 
+                            dateOfExpense = {item.dateOfExpense} 
+                            cost ={item.cost}
+                            i={index}
+              />
+              ))}
             </>
           )}
           {activeSection === 'Save' && <SaveExpense />}
