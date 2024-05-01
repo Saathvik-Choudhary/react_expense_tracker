@@ -35,7 +35,7 @@ function App() {
   }, []);
 
 const getExpenseList = () =>{
-    fetch('http://localhost:8080/expense/all')
+     fetch('http://localhost:8080/expense')
     .then((res) => {
         return res.json();
     })
