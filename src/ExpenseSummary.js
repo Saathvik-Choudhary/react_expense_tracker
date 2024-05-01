@@ -14,7 +14,7 @@ function ExpenseSummary() {
     }, []);
 
     const getData = () => {
-        fetch('http://localhost:8080/expense/summary/3')
+        fetch('http://localhost:8080/expenses/summary/3')
             .then((res) => res.json())
             .then((data) => {
                 console.log(data);

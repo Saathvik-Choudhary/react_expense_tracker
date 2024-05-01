@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import "./SaveExpense.css";
 
@@ -10,6 +10,25 @@ function SaveExpense() {
     currency: null,
   });
   const [errors, setErrors] = useState({});
+  const [currencyData, setCurrencyData] = useState([]);
+
+  useEffect(() => {
+    const apiUrl = "http://localhost:8080/expenses/currencies";
+
+    fetch(apiUrl)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        setCurrencyData(data);
+      })
+      .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+      });
+  }, []);
 
   const handleChange = async (event) => {
     const { name, value } = event.target;
@@ -51,8 +70,8 @@ function SaveExpense() {
         dateOfExpense: new Date(formData.purchaseDate).toISOString(),
       };
 
-      const response = await fetch("http://localhost:8080/expense/save", {
-        method: 'POST',
+      const response = await fetch("http://localhost:8080/expenses", {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -71,14 +90,6 @@ function SaveExpense() {
     });
   };
 
-  const currencyData = [
-    "AED", "AUD", "BRL", "CAD", "CHF", "CNY",
-    "CZK", "DKK", "EUR", "GBP", "HKD", "HUF", 
-    "IDR", "INR", "JPY", "KRW", "MXN", "MYR", 
-    "NOK", "NZD", "PHP", "PLN", "RUB", "SAR", 
-    "SEK", "SGD", "THB", "TRY", "USD", "ZAR"
-  ];
-  
   const options = currencyData.map(currency => ({
     label: currency,
     value: currency

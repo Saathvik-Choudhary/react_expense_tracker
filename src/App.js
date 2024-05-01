@@ -19,6 +19,7 @@ function App() {
 
   const handleAssetClick = () => {
     setActiveSection('Spend');
+    getExpenseList();
     setIsAssetButtonClicked(true); // Set Asset button as clicked
     setIsHomeButtonClicked(false); // Reset Home button state
   };
@@ -35,7 +36,7 @@ function App() {
   }, []);
 
 const getExpenseList = () =>{
-     fetch('http://localhost:8080/expense')
+     fetch('http://localhost:8080/expenses')
     .then((res) => {
         return res.json();
     })
