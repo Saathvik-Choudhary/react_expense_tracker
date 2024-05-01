@@ -36,7 +36,7 @@ function ExpenseSummary() {
                     <div key={index} className="Month1Summary">
                         <div className="container">
                             <div className="content">{formatDate(summary.month)}</div>
-                            <div className="contentValue">USD {summary.totalExpenses.toFixed(2)}</div>
+                            <div className="contentValue">USD {summary.totalExpenses?.toFixed(2)}</div>
                         </div>
                     </div>
                 ))
