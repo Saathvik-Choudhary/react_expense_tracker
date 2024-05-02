@@ -1,6 +1,6 @@
 import "./ExpenseList.css"; // Assuming correct import path for styles
 
-function ExpenseList({ title = "", dateOfExpense = "", cost = 0, i=0}) {
+function ExpenseList({ title = "", dateOfExpense = "", cost = 0, currency="", i=0}) {
     
     function formatYearsMonths(dateOfExpense) {
         const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -20,7 +20,7 @@ function ExpenseList({ title = "", dateOfExpense = "", cost = 0, i=0}) {
       <div className={i % 2 === 0 ? "evenRow" : "oddRow"}>
         <div className="assetTitle">{title}</div>
         <div className="assetDetails">
-            <div className="details1"><span style={{ fontSize: '2vh' }}>USD:</span> {cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</div>
+            <div className="details1"><span style={{ fontSize: '2vh' }}>{currency}</span> {cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</div>
             <div className="details2">{formatYearsMonths(dateOfExpense)}</div>
         </div>
       </div>

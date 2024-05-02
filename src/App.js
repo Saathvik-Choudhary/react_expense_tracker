@@ -67,6 +67,7 @@ const getExpenseList = () =>{
                             title={item.title} 
                             dateOfExpense = {item.dateOfExpense} 
                             cost ={item.cost}
+                            currency={item.currency}
                             i={index}
               />
               ))}
