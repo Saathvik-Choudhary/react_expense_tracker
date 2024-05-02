@@ -63,11 +63,13 @@ function SaveExpense() {
       return;
     }
 
+
     try {
       const formattedData = {
         cost: parseFloat(formData.cost),
         title: formData.title,
         dateOfExpense: new Date(formData.purchaseDate).toISOString(),
+        currency:formData.currency
       };
 
       const response = await fetch("http://localhost:8080/expenses", {
